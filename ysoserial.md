@@ -42,4 +42,4 @@ implementation("com.alibaba.fastjson2:fastjson2:2.0.20")
 
 В процессе выполнения, может появится следующая ошибка, но при этом команда исполнится:
 
-![Search Result](/images/image_b.png)
+![Search Result](/images/image_b.jpg)
