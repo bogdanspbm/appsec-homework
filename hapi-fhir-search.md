@@ -119,6 +119,7 @@ select c0, de
 
 Пример Poc-а с использованием fastjson:
 
+Main:
 ```
 public class Main {
     public static void main(String[] args){
@@ -130,6 +131,7 @@ public class Main {
 }
 ```
 
+Server:
 ```
 public class PocRestServer {
     public void setRestfulServer(ca.uhn.fhir.rest.server.RestfulServer server){
