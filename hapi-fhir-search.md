@@ -107,3 +107,35 @@ select c0, de
 Классическое решение, использовать вместо FileInputStream функцию Files.newInputStream.
 
 **invoke(...)**
+
+В целом sink-и invoke, тоже достаточно безопасны. Например на следующем скриншоте, видно как invoke вызывается для сравнения двух объектов. При этом название метода, строго захардкожено и вероятность того, что через это место можно что-то сломать мала. 
+
+![Search Result](/images/image_f.png)
+
+Из интересного, один из методов invoke идет от метода с названием начинающимся на set. Это отсылает меня к уязвимости из fastjson - если мы включим autotype, то сможем вызвать функцию setServerConformanceProvider и invoke setRestfulServer. Опять же вызывается только захардкоженный метод. Внутри исходников библиотеки не удалось найти реализацию setRestfulServer. В качестве комментария указывается, что данный метод используется вместо констртуктора RestfulServer. Так же в коде есть N реализаций класса RestfulServer: 
+
+
+![Search Result](/images/image_g.png)
+
+Пример Poc-а с использованием fastjson:
+
+```
+public class Main {
+    public static void main(String[] args){
+        String poc = "{\"@type\":\"Lca.uhn.fhir.rest.server.RestfulServer;\",\"serverConformanceProvider\": {\"@type\": \"org.example.PocRestServer\" }}";
+        Object obj = JSON.parse(poc, JSONReader.Feature.UseNativeObject,
+                JSONReader.Feature.SupportAutoType);
+        System.out.println(obj);
+    }
+}
+```
+
+```
+public class PocRestServer {
+    public void setRestfulServer(ca.uhn.fhir.rest.server.RestfulServer server){
+      System.out.println("hello world");
+    }
+}
+```
+
+![Search Result](/images/image_h.png)
