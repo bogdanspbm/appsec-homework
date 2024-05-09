@@ -88,4 +88,4 @@ select c0, de
 
 В результате поиска, было найдено 60 потенциально опасных мест:
 
-![Search Result](/images/image_c.png)
+![Search Result](/images/image_c.jpg)
